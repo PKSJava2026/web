@@ -1,0 +1,19 @@
+.button {
+  background-color: var(--color-accent);
+  color: var(--color-accent-text);
+  outline: none;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 0 16px;
+  height: 36px;
+  font-weight: bold;
+  width: fit-content;
+
+  &:hover {
+    background-color: var(--color-accent-hover);
+  }
+
+  &:active {
+    background-color: var(--color-accent-pressed);
+  }
+}

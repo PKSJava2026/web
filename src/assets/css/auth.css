@@ -1,0 +1,32 @@
+.box-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.box {
+  margin: 0 auto;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  max-width: 400px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  h2 {
+    margin: 0;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .auth-link {
+      text-decoration: none;
+      color: var(--color-text-link);
+    }
+  }
+}

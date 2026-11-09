@@ -42,5 +42,10 @@
       "version": "12.16.1",
       "onFail": "download"
     }
-  }
+  },
+  "entry": [
+    "src/routes/**",
+    "src/styles.css",
+    "src/assets/css/**/*.css"
+  ]
 }
