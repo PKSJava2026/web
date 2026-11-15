@@ -9,11 +9,52 @@
   font-weight: bold;
   width: fit-content;
 
-  &:hover {
-    background-color: var(--color-accent-hover);
+  &.primary {
+    background-color: var(--color-accent);
+    color: var(--color-accent-text);
+
+    &:hover {
+      background-color: var(--color-accent-hover);
+    }
+
+    &:active {
+      background-color: var(--color-accent-pressed);
+    }
   }
 
-  &:active {
-    background-color: var(--color-accent-pressed);
+  &.secondary {
+    background-color: var(--color-field);
+    color: var(--color-text);
+    font-weight: normal;
+    &:hover {
+      background-color: var(--color-field-hover);
+    }
+  }
+
+  &.danger {
+    background-color: var(--color-danger-tint);
+    color: var(--color-danger);
+    font-weight: 600;
+
+    &:hover {
+      background-color: var(--color-danger-hover);
+    }
+  }
+
+  &.link {
+    background-color: transparent;
+    color: var(--color-text-link);
+    padding: 0;
+    height: auto;
+    font-weight: normal;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 }

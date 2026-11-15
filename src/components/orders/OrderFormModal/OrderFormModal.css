@@ -1,0 +1,50 @@
+.order-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.order-form-alert {
+  padding: 10px 14px;
+  background-color: var(--color-danger-tint);
+  color: var(--color-danger);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.order-modal-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.order-modal-form .form-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.order-modal-form .required {
+  color: var(--color-danger);
+}
+
+.order-modal-form .form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.order-modal-form .date-input-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.order-modal-form .date-input-row .input {
+  flex: 1;
+}
+
+.order-modal-form .clear-date-btn {
+  font-size: 13px;
+}

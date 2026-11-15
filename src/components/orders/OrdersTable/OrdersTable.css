@@ -1,0 +1,143 @@
+.orders-table-container {
+  width: 100%;
+  overflow-x: auto;
+  background-color: var(--color-bg);
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: var(--font-size-base);
+  font-family: inherit;
+}
+
+.orders-table thead tr {
+  background-color: var(--color-surface);
+  height: 40px;
+}
+
+.orders-table th {
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 0 8px;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.orders-table th:first-child {
+  border-top-left-radius: var(--radius-md);
+  border-bottom-left-radius: var(--radius-md);
+}
+
+.orders-table th:last-child {
+  border-top-right-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
+}
+
+.orders-table tbody tr {
+  height: 40px;
+  background-color: var(--color-bg);
+  cursor: pointer;
+  transition: background-color 0.12s ease;
+}
+
+.orders-table tbody tr:nth-child(even) {
+  background-color: var(--color-surface-subtle);
+}
+
+.orders-table tbody tr:hover {
+  background-color: var(--color-surface);
+}
+
+.orders-table tbody tr.selected {
+  background-color: var(--color-accent-tint) !important;
+}
+
+.orders-table tbody tr.selected td {
+  color: var(--color-accent-text);
+}
+
+.orders-table tbody tr.selected .cell-id {
+  color: var(--color-accent-text);
+  font-weight: bold;
+}
+
+.orders-table td {
+  padding: 0 8px;
+  color: var(--color-text);
+  vertical-align: middle;
+  font-size: 13px;
+}
+
+.orders-table .cell-id {
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+.orders-table .cell-customer {
+  max-width: 110px;
+  font-weight: 500;
+}
+
+.orders-table .cell-cargo {
+  max-width: 200px;
+}
+
+.orders-table .cell-route {
+  max-width: 110px;
+}
+
+.orders-table .cell-weight,
+.orders-table .cell-volume,
+.orders-table .cell-date,
+.orders-table .cell-created {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.orders-table .cell-status {
+  white-space: nowrap;
+}
+
+.orders-table .text-truncate {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.orders-table-empty {
+  text-align: center;
+  padding: 48px 16px;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+/* Skeleton Loading */
+.orders-table .skeleton-row {
+  cursor: default;
+}
+
+.orders-table .skeleton-row:hover {
+  background-color: transparent;
+}
+
+.orders-table .skeleton-cell {
+  height: 16px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-field);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}

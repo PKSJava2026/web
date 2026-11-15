@@ -1,18 +1,24 @@
 import type { ComponentProps } from "react";
 import "./Select.css";
 
-interface SelectProps extends ComponentProps<"select"> {
+export interface SelectProps extends ComponentProps<"select"> {
   options: {
     name: string;
     value: string;
   }[];
 }
 
-export const Select = ({ options, ...props }: SelectProps) => {
+export const Select = ({
+  options,
+  className = "",
+  ...props
+}: SelectProps) => {
   return (
-    <select {...props}>
+    <select className={`select ${className}`} {...props}>
       {options.map((opt) => (
-        <option value={opt.value}>{opt.name}</option>
+        <option key={opt.value} value={opt.value}>
+          {opt.name}
+        </option>
       ))}
     </select>
   );

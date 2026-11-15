@@ -1,0 +1,84 @@
+.sidebar {
+  width: 200px;
+  min-width: 200px;
+  height: 100vh;
+  background-color: var(--color-bg);
+  padding: 8px 16px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    a {
+      display: block;
+      line-height: 32px;
+      color: inherit;
+      text-decoration: none;
+      height: 32px;
+      padding: 0 16px;
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-base);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      &.active {
+        font-weight: bold;
+        background-color: var(--color-accent-tint);
+      }
+
+      &:hover {
+        background-color: var(--color-surface);
+      }
+    }
+  }
+}
+
+.user-info {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    "avatar meta"
+    "logout logout";
+
+  .avatar {
+    grid-area: avatar;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-avatar);
+    background-color: var(--color-accent-tint);
+    color: var(--color-accent-text);
+    font-weight: bold;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .user-meta {
+    display: flex;
+    flex-direction: column;
+    grid-area: meta;
+
+    .user-name {
+      color: var(--color-text);
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .user-role {
+      color: var(--color-text-muted);
+      font-size: 12px;
+    }
+  }
+
+  .logout {
+    grid-area: logout;
+    width: 100%;
+  }
+}

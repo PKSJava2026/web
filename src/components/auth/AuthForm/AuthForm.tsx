@@ -9,7 +9,7 @@ import {
 } from "#/services/auth";
 import type { FieldErrors } from "#/lib/validation";
 import { Button } from "#/components/ui/Button";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { Select } from "#/components/ui/Select";
 
 type FormErrors = FieldErrors<
@@ -26,23 +26,36 @@ export const AuthForm = ({ type }: { type: "login" | "register" }) => {
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [role, setRole] = useState<ROLES>("CUSTOMER");
 
+  const navigate = useNavigate();
+
   const [errors, setErrors] = useState<FormErrors>({});
 
   async function onSubmit(e: ChangeEvent) {
     e.preventDefault();
 
     if (type == "login") {
-      const [res, err] = await login({ nickname, password });
+      const [, err] = await login({ nickname, password });
 
       if (err) {
         setErrors(err);
+        return;
       }
+
+      navigate({ to: "/requests" });
     } else {
-      const [res, err] = await register({ nickname, email, password, role });
+      if (password !== passwordConfirmation) {
+        setErrors({ passwordConfirmation: "Пароли не совпадают" });
+        return;
+      }
+
+      const [, err] = await register({ nickname, email, password, role });
 
       if (err) {
         setErrors(err);
+        return;
       }
+
+      navigate({ to: "/login" });
     }
   }
 
@@ -50,7 +63,7 @@ export const AuthForm = ({ type }: { type: "login" | "register" }) => {
     return (
       <div className="auth-form">
         <h2>Вход в систему</h2>
-        <form onSubmit={() => onSubmit}>
+        <form onSubmit={(e) => onSubmit(e)}>
           <label htmlFor="nickname">Никнейм</label>
           <Input
             placeholder="Введите никнейм"
@@ -76,7 +89,7 @@ export const AuthForm = ({ type }: { type: "login" | "register" }) => {
     return (
       <div className="auth-form">
         <h2>Регистрация</h2>
-        <form onSubmit={() => onSubmit}>
+        <form onSubmit={(e) => onSubmit(e)}>
           <label htmlFor="nickname">Никнейм</label>
           <Input
             placeholder="Введите никнейм"
@@ -115,7 +128,7 @@ export const AuthForm = ({ type }: { type: "login" | "register" }) => {
             ]}
           />
           <Button>Зарегистрироваться</Button>
-          <Link className="auth-link" to="/register">
+          <Link className="auth-link" to="/login">
             Уже есть аккаунт? Войти
           </Link>
         </form>

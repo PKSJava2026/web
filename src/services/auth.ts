@@ -2,6 +2,7 @@ import { z } from "zod";
 import api, { setAuthToken } from "#/lib/api";
 import { validate, type FieldErrors } from "#/lib/validation";
 import type { LoginResponse, UserResponse } from "#/lib/types";
+import { useAuthStore } from "#/store/useAuthStore";
 
 export const loginSchema = z.object({
   nickname: z
@@ -32,17 +33,20 @@ export const registerSchema = z.object({
 export type RegisterInput = z.infer<typeof registerSchema>;
 
 export const login = async (
-  data: LoginInput
+  data: LoginInput,
 ): Promise<[LoginResponse, null] | [null, FieldErrors<LoginInput>]> => {
   const [valid, err] = validate(loginSchema, data);
   if (err) return [null, err];
   const res = await api.auth.login(valid);
-  if (res.token) setAuthToken(res.token);
+  if (res.token) {
+    setAuthToken(res.token);
+    useAuthStore.getState().setUser(res.user);
+  }
   return [res, null];
 };
 
 export const register = async (
-  data: RegisterInput
+  data: RegisterInput,
 ): Promise<[UserResponse, null] | [null, FieldErrors<RegisterInput>]> => {
   const [valid, err] = validate(registerSchema, data);
   if (err) return [null, err];

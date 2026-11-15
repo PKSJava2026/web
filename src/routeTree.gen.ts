@@ -9,13 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppRouteImport } from './routes/_app'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as AppContractsRouteImport } from './routes/_app.contracts'
+import { Route as AppCooperationRouteImport } from './routes/_app.cooperation'
+import { Route as AppDatabaseTablesRouteImport } from './routes/_app.database-tables'
+import { Route as AppForwardersRouteImport } from './routes/_app.forwarders'
+import { Route as AppMyRatingRouteImport } from './routes/_app.my-rating'
+import { Route as AppNotificationsRouteImport } from './routes/_app.notifications'
+import { Route as AppProfileRouteImport } from './routes/_app.profile'
+import { Route as AppRateOrdersRouteImport } from './routes/_app.rate-orders'
+import { Route as AppRequestsRouteImport } from './routes/_app.requests'
+import { Route as AppStatisticsRouteImport } from './routes/_app.statistics'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -28,44 +37,164 @@ const RegisterRoute = RegisterRouteImport.update({
   path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppContractsRoute = AppContractsRouteImport.update({
+  id: '/contracts',
+  path: '/contracts',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCooperationRoute = AppCooperationRouteImport.update({
+  id: '/cooperation',
+  path: '/cooperation',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDatabaseTablesRoute = AppDatabaseTablesRouteImport.update({
+  id: '/database-tables',
+  path: '/database-tables',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppForwardersRoute = AppForwardersRouteImport.update({
+  id: '/forwarders',
+  path: '/forwarders',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMyRatingRoute = AppMyRatingRouteImport.update({
+  id: '/my-rating',
+  path: '/my-rating',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppNotificationsRoute = AppNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProfileRoute = AppProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppRateOrdersRoute = AppRateOrdersRouteImport.update({
+  id: '/rate-orders',
+  path: '/rate-orders',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppRequestsRoute = AppRequestsRouteImport.update({
+  id: '/requests',
+  path: '/requests',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppStatisticsRoute = AppStatisticsRouteImport.update({
+  id: '/statistics',
+  path: '/statistics',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof AppRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/contracts': typeof AppContractsRoute
+  '/cooperation': typeof AppCooperationRoute
+  '/database-tables': typeof AppDatabaseTablesRoute
+  '/forwarders': typeof AppForwardersRoute
+  '/my-rating': typeof AppMyRatingRoute
+  '/notifications': typeof AppNotificationsRoute
+  '/profile': typeof AppProfileRoute
+  '/rate-orders': typeof AppRateOrdersRoute
+  '/requests': typeof AppRequestsRoute
+  '/statistics': typeof AppStatisticsRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/': typeof AppRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/contracts': typeof AppContractsRoute
+  '/cooperation': typeof AppCooperationRoute
+  '/database-tables': typeof AppDatabaseTablesRoute
+  '/forwarders': typeof AppForwardersRoute
+  '/my-rating': typeof AppMyRatingRoute
+  '/notifications': typeof AppNotificationsRoute
+  '/profile': typeof AppProfileRoute
+  '/rate-orders': typeof AppRateOrdersRoute
+  '/requests': typeof AppRequestsRoute
+  '/statistics': typeof AppStatisticsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/_app': typeof AppRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/_app/contracts': typeof AppContractsRoute
+  '/_app/cooperation': typeof AppCooperationRoute
+  '/_app/database-tables': typeof AppDatabaseTablesRoute
+  '/_app/forwarders': typeof AppForwardersRoute
+  '/_app/my-rating': typeof AppMyRatingRoute
+  '/_app/notifications': typeof AppNotificationsRoute
+  '/_app/profile': typeof AppProfileRoute
+  '/_app/rate-orders': typeof AppRateOrdersRoute
+  '/_app/requests': typeof AppRequestsRoute
+  '/_app/statistics': typeof AppStatisticsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/register'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/register'
+    | '/contracts'
+    | '/cooperation'
+    | '/database-tables'
+    | '/forwarders'
+    | '/my-rating'
+    | '/notifications'
+    | '/profile'
+    | '/rate-orders'
+    | '/requests'
+    | '/statistics'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/register'
-  id: '__root__' | '/' | '/login' | '/register'
+  to:
+    | '/'
+    | '/login'
+    | '/register'
+    | '/contracts'
+    | '/cooperation'
+    | '/database-tables'
+    | '/forwarders'
+    | '/my-rating'
+    | '/notifications'
+    | '/profile'
+    | '/rate-orders'
+    | '/requests'
+    | '/statistics'
+  id:
+    | '__root__'
+    | '/_app'
+    | '/login'
+    | '/register'
+    | '/_app/contracts'
+    | '/_app/cooperation'
+    | '/_app/database-tables'
+    | '/_app/forwarders'
+    | '/_app/my-rating'
+    | '/_app/notifications'
+    | '/_app/profile'
+    | '/_app/rate-orders'
+    | '/_app/requests'
+    | '/_app/statistics'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
+    '/_app': {
+      id: '/_app'
+      path: ''
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -82,11 +211,109 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/contracts': {
+      id: '/_app/contracts'
+      path: '/contracts'
+      fullPath: '/contracts'
+      preLoaderRoute: typeof AppContractsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/cooperation': {
+      id: '/_app/cooperation'
+      path: '/cooperation'
+      fullPath: '/cooperation'
+      preLoaderRoute: typeof AppCooperationRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/database-tables': {
+      id: '/_app/database-tables'
+      path: '/database-tables'
+      fullPath: '/database-tables'
+      preLoaderRoute: typeof AppDatabaseTablesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/forwarders': {
+      id: '/_app/forwarders'
+      path: '/forwarders'
+      fullPath: '/forwarders'
+      preLoaderRoute: typeof AppForwardersRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/my-rating': {
+      id: '/_app/my-rating'
+      path: '/my-rating'
+      fullPath: '/my-rating'
+      preLoaderRoute: typeof AppMyRatingRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/notifications': {
+      id: '/_app/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof AppNotificationsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/profile': {
+      id: '/_app/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AppProfileRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/rate-orders': {
+      id: '/_app/rate-orders'
+      path: '/rate-orders'
+      fullPath: '/rate-orders'
+      preLoaderRoute: typeof AppRateOrdersRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/requests': {
+      id: '/_app/requests'
+      path: '/requests'
+      fullPath: '/requests'
+      preLoaderRoute: typeof AppRequestsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/statistics': {
+      id: '/_app/statistics'
+      path: '/statistics'
+      fullPath: '/statistics'
+      preLoaderRoute: typeof AppStatisticsRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppContractsRoute: typeof AppContractsRoute
+  AppCooperationRoute: typeof AppCooperationRoute
+  AppDatabaseTablesRoute: typeof AppDatabaseTablesRoute
+  AppForwardersRoute: typeof AppForwardersRoute
+  AppMyRatingRoute: typeof AppMyRatingRoute
+  AppNotificationsRoute: typeof AppNotificationsRoute
+  AppProfileRoute: typeof AppProfileRoute
+  AppRateOrdersRoute: typeof AppRateOrdersRoute
+  AppRequestsRoute: typeof AppRequestsRoute
+  AppStatisticsRoute: typeof AppStatisticsRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppContractsRoute: AppContractsRoute,
+  AppCooperationRoute: AppCooperationRoute,
+  AppDatabaseTablesRoute: AppDatabaseTablesRoute,
+  AppForwardersRoute: AppForwardersRoute,
+  AppMyRatingRoute: AppMyRatingRoute,
+  AppNotificationsRoute: AppNotificationsRoute,
+  AppProfileRoute: AppProfileRoute,
+  AppRateOrdersRoute: AppRateOrdersRoute,
+  AppRequestsRoute: AppRequestsRoute,
+  AppStatisticsRoute: AppStatisticsRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
 }

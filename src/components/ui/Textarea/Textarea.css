@@ -1,0 +1,31 @@
+.textarea {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+
+  textarea {
+    width: 100%;
+    padding: 8px 12px;
+    background-color: var(--color-field);
+    color: var(--color-text);
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-base);
+    font-family: inherit;
+    outline: none;
+    resize: vertical;
+    min-height: 72px;
+    box-sizing: border-box;
+    transition: background-color 0.15s ease;
+
+    &:focus {
+      background-color: var(--color-accent-tint);
+    }
+  }
+
+  .error {
+    color: var(--color-danger);
+    font-size: 12px;
+  }
+}

@@ -1,18 +1,20 @@
 import type { z } from "zod";
 
-export type FieldErrors<T> = Partial<Record<keyof T, string>>;
+export type FieldErrors<T> = Partial<Record<keyof T, string>> & {
+  general?: string;
+};
 
 export const getFieldErrors = <T>(
   issues: z.core.$ZodIssue[],
 ): FieldErrors<T> => {
-  const errors: FieldErrors<T> = {};
+  const errors: Record<string, string | undefined> = {};
   for (const issue of issues) {
-    const key = issue.path[0] as keyof T;
+    const key = String(issue.path[0]);
     if (key && !errors[key]) {
       errors[key] = issue.message;
     }
   }
-  return errors;
+  return errors as FieldErrors<T>;
 };
 
 export const validate = <T extends z.ZodType>(
