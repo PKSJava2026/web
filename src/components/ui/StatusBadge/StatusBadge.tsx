@@ -2,22 +2,30 @@ import type {
   OrderStatus,
   ContractStatus,
   ChangeRequestStatus,
+  CooperationRequestStatus,
 } from "#/lib/types";
 import { ORDER_STATUS_LABELS } from "#/services/orders";
 import {
   CONTRACT_STATUS_LABELS,
   CHANGE_REQUEST_STATUS_LABELS,
 } from "#/services/contracts";
+import { COOPERATION_STATUS_LABELS } from "#/services/cooperation";
 import "./StatusBadge.css";
 
 const ALL_STATUS_LABELS: Record<string, string> = {
   ...ORDER_STATUS_LABELS,
   ...CONTRACT_STATUS_LABELS,
   ...CHANGE_REQUEST_STATUS_LABELS,
+  ...COOPERATION_STATUS_LABELS,
 };
 
 export interface StatusBadgeProps {
-  status: OrderStatus | ContractStatus | ChangeRequestStatus | string;
+  status:
+    | OrderStatus
+    | ContractStatus
+    | ChangeRequestStatus
+    | CooperationRequestStatus
+    | string;
   label?: string;
   className?: string;
 }

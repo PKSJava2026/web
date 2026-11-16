@@ -1,0 +1,115 @@
+.cooperation-table-container {
+  width: 100%;
+  overflow-x: auto;
+  background-color: var(--color-bg);
+}
+
+.cooperation-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: var(--font-size-base);
+  font-family: inherit;
+}
+
+.cooperation-table thead tr {
+  background-color: var(--color-surface);
+  height: 40px;
+}
+
+.cooperation-table th {
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 0 8px;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.cooperation-table th:first-child {
+  border-top-left-radius: var(--radius-md);
+  border-bottom-left-radius: var(--radius-md);
+}
+
+.cooperation-table th:last-child {
+  border-top-right-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
+}
+
+.cooperation-table tbody tr {
+  height: 40px;
+  background-color: var(--color-bg);
+  cursor: pointer;
+  transition: background-color 0.12s ease;
+}
+
+.cooperation-table tbody tr:nth-child(even) {
+  background-color: var(--color-surface-subtle);
+}
+
+.cooperation-table tbody tr:hover {
+  background-color: var(--color-surface);
+}
+
+.cooperation-table tbody tr.selected {
+  background-color: var(--color-accent-tint) !important;
+}
+
+.cooperation-table tbody tr.selected td {
+  color: var(--color-accent-text);
+}
+
+.cooperation-table td {
+  padding: 0 8px;
+  font-size: 13px;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.cooperation-table td.cell-id {
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.cooperation-table td.cell-truncate {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cooperation-table td.cell-created {
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.cooperation-table-empty {
+  text-align: center;
+  padding: 48px 16px !important;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+/* Skeleton loader */
+.cooperation-table .skeleton-row td {
+  padding: 0 8px;
+}
+
+.cooperation-table .skeleton-cell {
+  height: 14px;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-sm);
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}

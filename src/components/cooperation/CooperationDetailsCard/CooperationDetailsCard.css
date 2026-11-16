@@ -1,0 +1,51 @@
+.cooperation-details-card {
+  width: 250px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: fit-content;
+}
+
+.cooperation-details-title {
+  margin: 0;
+  color: var(--color-accent-text);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.cooperation-details-hint {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.cooperation-details-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cooperation-details-grid .detail-item {
+  display: grid;
+  grid-template-columns: 85px 1fr;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.cooperation-details-grid .field-label {
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.cooperation-details-grid .value-label {
+  color: var(--color-text);
+  word-break: break-word;
+  font-size: 13px;
+}
+
+.cooperation-details-grid .wrap-text {
+  white-space: pre-wrap;
+}

@@ -63,3 +63,9 @@
   background-color: var(--color-danger-tint);
   color: var(--color-danger);
 }
+
+/* Cooperation */
+.status-badge.status-processed {
+  background-color: #dcfce7;
+  color: #166534;
+}

@@ -1,0 +1,53 @@
+.cooperation-page {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px 20px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.cooperation-page .page-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-accent-text);
+}
+
+.cooperation-actions-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.cooperation-error-alert {
+  padding: 10px 14px;
+  background-color: var(--color-danger-tint);
+  color: var(--color-danger);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.cooperation-main-content {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  width: 100%;
+  min-width: 0;
+}
+
+.cooperation-table-section {
+  flex: 1 1 0%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.cooperation-count-label {
+  color: var(--color-text-muted);
+  font-size: 13px;
+  margin-top: 4px;
+}

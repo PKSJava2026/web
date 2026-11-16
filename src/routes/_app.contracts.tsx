@@ -26,11 +26,13 @@ import {
   CONTRACT_KIND_LABELS,
 } from "#/services/contracts";
 import { Tabs, type TabItem } from "#/components/ui/Tabs";
-import { ContractsTable } from "#/components/contracts/ContractsTable";
-import { ContractDetailsCard } from "#/components/contracts/ContractDetailsCard";
-import { ChangeRequestsTable } from "#/components/contracts/ChangeRequestsTable";
-import { ContractOfferModal } from "#/components/contracts/ContractOfferModal";
-import { ContractAmendmentModal } from "#/components/contracts/ContractAmendmentModal";
+import {
+  ContractsTable,
+  ContractDetailsCard,
+  ChangeRequestsTable,
+  ContractOfferModal,
+  ContractAmendmentModal,
+} from "#/components/contracts";
 import { ConfirmModal } from "#/components/ui/ConfirmModal";
 import { Button } from "#/components/ui/Button";
 import { formatMoney } from "#/lib/format";
@@ -70,7 +72,6 @@ function ContractsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Modals
   const [isOfferOpen, setIsOfferOpen] = useState(false);
   const [isAmendOpen, setIsAmendOpen] = useState(false);
   const [isAcceptContractOpen, setIsAcceptContractOpen] = useState(false);
@@ -81,7 +82,6 @@ function ContractsPage() {
   const [isCancelRequestOpen, setIsCancelRequestOpen] = useState(false);
   const [isActionLoading, setIsActionLoading] = useState(false);
 
-  // Derived selected items
   const selectedContract = useMemo(
     () => contracts.find((c) => c.id === selectedContractId) || null,
     [contracts, selectedContractId],
@@ -93,12 +93,10 @@ function ContractsPage() {
   );
 
   const matchingContractForRequest = useMemo(
-    () =>
-      contracts.find((c) => c.id === selectedRequest?.contractId) || null,
+    () => contracts.find((c) => c.id === selectedRequest?.contractId) || null,
     [contracts, selectedRequest?.contractId],
   );
 
-  // Data fetching
   const loadData = useCallback(async () => {
     if (!user) return;
     if (user.role === "CARRIER" && activeKind !== "CARRIER") return;
@@ -143,7 +141,6 @@ function ContractsPage() {
     loadData();
   }, [loadData]);
 
-  // Load offer prerequisites when opening offer modal
   const handleOpenOffer = async () => {
     setError(null);
     const [users, uErr] = await getCounterparties(activeKind);

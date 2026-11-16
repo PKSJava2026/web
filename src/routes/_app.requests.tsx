@@ -15,10 +15,12 @@ import {
   ORDER_STATUS_LABELS,
   ORDER_SORT_LABELS,
 } from "#/services/orders";
-import { OrdersTable } from "#/components/orders/OrdersTable";
-import { OrderDetailsCard } from "#/components/orders/OrderDetailsCard";
-import { OrderFormModal } from "#/components/orders/OrderFormModal";
-import { OrderStatusModal } from "#/components/orders/OrderStatusModal";
+import {
+  OrdersTable,
+  OrderDetailsCard,
+  OrderFormModal,
+  OrderStatusModal,
+} from "#/components/orders";
 import { ConfirmModal } from "#/components/ui/ConfirmModal";
 import { Button } from "#/components/ui/Button";
 import { Input } from "#/components/ui/Input";

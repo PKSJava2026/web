@@ -1,0 +1,69 @@
+.cooperation-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cooperation-form-alert {
+  padding: 10px 14px;
+  background-color: var(--color-danger-tint);
+  color: var(--color-danger);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.cooperation-modal-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cooperation-modal-form .form-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.cooperation-modal-form .required {
+  color: var(--color-danger);
+}
+
+.cooperation-modal-form .field-error {
+  color: var(--color-danger);
+  font-size: 12px;
+}
+
+.cooperation-modal-form .form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.cooperation-modal-form .date-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cooperation-modal-form .date-input-row button {
+  padding: 0 4px;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.cooperation-modal-form .carrier-info-box {
+  padding: 10px 14px;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cooperation-modal-form .carrier-info-box .carrier-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+}
