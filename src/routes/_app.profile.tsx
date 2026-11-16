@@ -1,9 +1,18 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
+import { useAuthStore } from "#/store/useAuthStore";
+import { ProfileCard } from "#/components/profile";
+import "./profile.css";
 
-export const Route = createFileRoute('/_app/profile')({
-  component: RouteComponent,
-})
+export const Route = createFileRoute("/_app/profile")({
+  component: ProfilePage,
+});
 
-function RouteComponent() {
-  return <div>Hello "/_app/profile"!</div>
+function ProfilePage() {
+  const user = useAuthStore((state) => state.user);
+
+  return (
+    <div className="profile-page">
+      <ProfileCard user={user} />
+    </div>
+  );
 }
