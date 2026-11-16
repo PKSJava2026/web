@@ -1,0 +1,151 @@
+.change-requests-table-container {
+  width: 100%;
+  overflow-x: auto;
+  background-color: var(--color-bg);
+}
+
+.change-requests-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: var(--font-size-base);
+  font-family: inherit;
+}
+
+.change-requests-table thead tr {
+  background-color: var(--color-surface);
+  height: 38px;
+}
+
+.change-requests-table th {
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 0 8px;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.change-requests-table th:first-child {
+  border-top-left-radius: var(--radius-md);
+  border-bottom-left-radius: var(--radius-md);
+}
+
+.change-requests-table th:last-child {
+  border-top-right-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
+}
+
+.change-requests-table tbody tr {
+  height: 38px;
+  background-color: var(--color-bg);
+  cursor: pointer;
+  transition: background-color 0.12s ease;
+}
+
+.change-requests-table tbody tr:nth-child(even) {
+  background-color: var(--color-surface-subtle);
+}
+
+.change-requests-table tbody tr:hover {
+  background-color: var(--color-surface);
+}
+
+.change-requests-table tbody tr.selected {
+  background-color: var(--color-accent-tint) !important;
+}
+
+.change-requests-table tbody tr.selected td {
+  color: var(--color-accent-text);
+}
+
+.change-requests-table tbody tr.selected .cell-id {
+  color: var(--color-accent-text);
+  font-weight: bold;
+}
+
+.change-requests-table td {
+  padding: 0 8px;
+  color: var(--color-text);
+  vertical-align: middle;
+  font-size: 13px;
+}
+
+.change-requests-table .cell-id,
+.change-requests-table .cell-contract {
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.change-requests-table .cell-initiator {
+  max-width: 110px;
+}
+
+.change-requests-table .cell-proposal {
+  max-width: 320px;
+}
+
+.change-requests-table .cell-created {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.change-requests-table .type-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 3px 8px;
+  border-radius: var(--radius-badge);
+  white-space: nowrap;
+}
+
+.change-requests-table .type-amend {
+  background-color: var(--color-accent-tint);
+  color: var(--color-accent-text);
+}
+
+.change-requests-table .type-terminate {
+  background-color: var(--color-danger-tint);
+  color: var(--color-danger);
+}
+
+.change-requests-table .text-truncate {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.change-requests-table .font-medium {
+  font-weight: 500;
+}
+
+.change-requests-table-empty {
+  text-align: center;
+  padding: 32px 16px;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+/* Skeleton */
+.change-requests-table .skeleton-row {
+  cursor: default;
+}
+
+.change-requests-table .skeleton-row:hover {
+  background-color: transparent;
+}
+
+.change-requests-table .skeleton-cell {
+  height: 14px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-field);
+  animation: pulse 1.5s ease-in-out infinite;
+}

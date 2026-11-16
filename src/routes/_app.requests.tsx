@@ -58,6 +58,8 @@ function RequestsPage() {
   const selectedOrder = orders.find((o) => o.id === selectedId) || null;
 
   const fetchOrders = useCallback(async () => {
+    if (!user || user.role === "CARRIER") return;
+
     setIsLoading(true);
     setError(null);
 
@@ -81,9 +83,9 @@ function RequestsPage() {
 
     if (data) {
       setOrders(data);
-      if (selectedId !== null && !data.some((o) => o.id === selectedId)) {
-        setSelectedId(null);
-      }
+      setSelectedId((prev) =>
+        prev !== null && !data.some((o) => o.id === prev) ? null : prev,
+      );
     }
   }, [
     user?.role,
@@ -94,7 +96,6 @@ function RequestsPage() {
     activeOnly,
     sortBy,
     isDesc,
-    selectedId,
   ]);
 
   useEffect(() => {
@@ -111,9 +112,9 @@ function RequestsPage() {
     setIsDesc(false);
   };
 
-  const handleRowSelect = (order: OrderResponse) => {
-    setSelectedId(order.id === selectedId ? null : order.id);
-  };
+  const handleRowSelect = useCallback((order: OrderResponse) => {
+    setSelectedId((prev) => (prev === order.id ? null : order.id));
+  }, []);
 
   const handleCancelOrder = async () => {
     if (!selectedOrder) return;
@@ -173,6 +174,18 @@ function RequestsPage() {
     isCustomer &&
     (selectedOrder?.status === "NEW" || selectedOrder?.status === "CANCELLED");
   const canChangeStatus = isForwarder && Boolean(selectedOrder);
+
+  if (user?.role === "CARRIER") {
+    return (
+      <div className="requests-page">
+        <h1 className="page-title">Заявки на перевозку</h1>
+        <div style={{ color: "var(--color-text-muted)", marginTop: 16 }}>
+          Раздел заявок доступен только заказчикам и экспедиторам. Для работы с
+          перевозками перейдите в раздел «Договоры».
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="requests-page">
@@ -352,7 +365,7 @@ function RequestsPage() {
         onClose={() => setIsCancelConfirmOpen(false)}
         onConfirm={handleCancelOrder}
         title="Отмена заявки"
-        message={`Вы действительно хотите отменить заявку #${selectedOrder?.id}?`}
+        message={`Вы действительно хотите отменить заявку №${selectedOrder?.id}?`}
         confirmText="Отменить заявку"
         isDanger
         isLoading={isActionLoading}
@@ -363,7 +376,7 @@ function RequestsPage() {
         onClose={() => setIsDeleteConfirmOpen(false)}
         onConfirm={handleDeleteOrder}
         title="Удаление заявки"
-        message={`Вы действительно хотите удалить заявку #${selectedOrder?.id}? Это действие необратимо.`}
+        message={`Вы действительно хотите удалить заявку №${selectedOrder?.id}? Это действие необратимо.`}
         confirmText="Удалить"
         isDanger
         isLoading={isActionLoading}

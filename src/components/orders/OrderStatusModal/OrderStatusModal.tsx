@@ -61,7 +61,7 @@ export const OrderStatusModal = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={`Изменение статуса заявки #${order.id}`}
+      title={`Изменение статуса заявки №${order.id}`}
       maxWidth={420}
       footer={
         <>

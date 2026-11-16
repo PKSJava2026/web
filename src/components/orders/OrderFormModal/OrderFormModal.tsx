@@ -97,7 +97,7 @@ export const OrderFormModal = ({
       onClose={onClose}
       title={
         isEditing
-          ? `Редактирование заявки #${initialOrder?.id}`
+          ? `Редактирование заявки №${initialOrder?.id}`
           : "Новая заявка на перевозку"
       }
       maxWidth={520}

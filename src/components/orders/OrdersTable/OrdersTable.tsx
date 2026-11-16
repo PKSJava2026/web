@@ -1,3 +1,4 @@
+import { memo } from "react";
 import type { OrderResponse } from "#/lib/types";
 import {
   formatDate,
@@ -18,7 +19,7 @@ export interface OrdersTableProps {
   className?: string;
 }
 
-export const OrdersTable = ({
+export const OrdersTable = memo(function OrdersTable({
   orders,
   selectedId,
   onSelect,
@@ -26,7 +27,7 @@ export const OrdersTable = ({
   showCustomer = false,
   emptyMessage = "Заявок не найдено",
   className = "",
-}: OrdersTableProps) => {
+}: OrdersTableProps) {
   const totalCols = showCustomer ? 10 : 9;
 
   return (
@@ -152,4 +153,4 @@ export const OrdersTable = ({
       </table>
     </div>
   );
-};
+});

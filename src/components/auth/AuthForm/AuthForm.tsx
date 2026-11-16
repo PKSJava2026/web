@@ -34,14 +34,18 @@ export const AuthForm = ({ type }: { type: "login" | "register" }) => {
     e.preventDefault();
 
     if (type == "login") {
-      const [, err] = await login({ nickname, password });
+      const [res, err] = await login({ nickname, password });
 
       if (err) {
         setErrors(err);
         return;
       }
 
-      navigate({ to: "/requests" });
+      if (res?.user?.role === "CARRIER") {
+        navigate({ to: "/contracts" });
+      } else {
+        navigate({ to: "/requests" });
+      }
     } else {
       if (password !== passwordConfirmation) {
         setErrors({ passwordConfirmation: "Пароли не совпадают" });

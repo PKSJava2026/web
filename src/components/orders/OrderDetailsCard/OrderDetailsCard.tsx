@@ -1,3 +1,4 @@
+import { memo } from "react";
 import type { OrderResponse } from "#/lib/types";
 import {
   formatDate,
@@ -14,10 +15,10 @@ export interface OrderDetailsCardProps {
   showCustomer?: boolean;
 }
 
-export const OrderDetailsCard = ({
+export const OrderDetailsCard = memo(function OrderDetailsCard({
   order,
   showCustomer = false,
-}: OrderDetailsCardProps) => {
+}: OrderDetailsCardProps) {
   return (
     <Card className="order-details-card">
       <h3 className="order-details-title">Сведения о заявке</h3>
@@ -87,4 +88,4 @@ export const OrderDetailsCard = ({
       )}
     </Card>
   );
-};
+});

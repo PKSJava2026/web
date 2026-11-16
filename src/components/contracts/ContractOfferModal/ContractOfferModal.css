@@ -1,0 +1,58 @@
+.contract-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contract-form-alert {
+  padding: 10px 14px;
+  background-color: var(--color-danger-tint);
+  color: var(--color-danger);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.contract-empty-hint {
+  padding: 24px 16px;
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.contract-modal-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.contract-modal-form .form-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.contract-modal-form .required {
+  color: var(--color-danger);
+}
+
+.contract-modal-form .field-error {
+  color: var(--color-danger);
+  font-size: 12px;
+}
+
+.contract-modal-form .form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.contract-modal-form .date-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.contract-modal-form .date-input-row .input {
+  flex: 1;
+}

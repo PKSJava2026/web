@@ -85,6 +85,17 @@ export const client = ofetch.create({
       options.headers = headers;
     }
   },
+  onResponseError({ response }) {
+    if (response.status === 401 && typeof window !== "undefined") {
+      setAuthToken(null);
+      if (
+        window.location.pathname !== "/login" &&
+        window.location.pathname !== "/register"
+      ) {
+        window.location.href = "/login";
+      }
+    }
+  },
 });
 
 const request = <T>(url: string, options?: FetchOptions<any>): Promise<T> => {

@@ -1,5 +1,5 @@
 import type { Role } from "#/lib/types";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import "./SideBar.css";
 import { useAuthStore } from "#/store/useAuthStore";
 import { Button } from "../ui/Button";
@@ -64,7 +64,13 @@ const ROLES = {
 };
 
 export const SideBar = () => {
-  const { user } = useAuthStore();
+  const { user, logout } = useAuthStore();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate({ to: "/login" });
+  };
 
   const allowedItems = user
     ? NAV_ITEMS.filter((it) => it.roles.includes(user.role))
@@ -88,7 +94,11 @@ export const SideBar = () => {
             <div className="user-name">{user.nickname}</div>
             <div className="user-role">{ROLES[user.role]}</div>
           </div>
-          <Button className="logout" variant="secondary">
+          <Button
+            className="logout"
+            variant="secondary"
+            onClick={handleLogout}
+          >
             Выйти
           </Button>
         </div>
