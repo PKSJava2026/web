@@ -92,7 +92,7 @@ export const client = ofetch.create({
         window.location.pathname !== "/login" &&
         window.location.pathname !== "/register"
       ) {
-        window.location.href = "/login";
+        window.location.replace("/login");
       }
     }
   },
@@ -165,7 +165,7 @@ export const api = {
   },
 
   users: {
-    me: () => request<UserResponse>("/api/users/me", { method: "GET" }),
+    me: (signal?: AbortSignal) => request<UserResponse>("/api/users/me", { method: "GET", signal }),
     byRole: (role: Role) =>
       request<UserResponse[]>("/api/users", { method: "GET", query: { role } }),
   },

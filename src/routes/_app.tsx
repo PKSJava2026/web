@@ -1,54 +1,44 @@
-import { useEffect } from "react";
 import { SideBar } from "#/components/SideBar";
 import { sectionsForRole } from "#/components/SideBar/SideBar";
-import { createFileRoute, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
+import { api, getAuthToken } from "#/lib/api";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { useAuthStore } from "#/store/useAuthStore";
 
 export const Route = createFileRoute("/_app")({
   ssr: false,
+  beforeLoad: async ({ location, abortController }) => {
+    const token = getAuthToken();
+    if (!token) {
+      throw redirect({ to: "/login", replace: true });
+    }
+
+    const user = await api.users.me(abortController.signal).catch((error: unknown) => {
+      if ((error as { status?: number })?.status === 401) return null;
+      throw error;
+    });
+
+    if (!user || getAuthToken() !== token) {
+      throw redirect({ to: "/login", replace: true });
+    }
+
+    const { setUser } = useAuthStore.getState();
+    setUser(user);
+
+    const sections = sectionsForRole(user.role);
+    const pathname = location.pathname.replace(/\/$/, "");
+    if (!sections.some((section) => section.to === pathname)) {
+      throw redirect({ to: sections[0]?.to ?? "/login", replace: true });
+    }
+  },
   component: AppLayout,
 });
 
 function AppLayout() {
-  const user = useAuthStore((s) => s.user);
-  const hasHydrated = useAuthStore((s) => s.hasHydrated);
-  const navigate = useNavigate();
-  const pathname = useRouterState({ select: (state) => state.location.pathname.replace(/\/$/, "") });
-
-  useEffect(() => {
-    if (hasHydrated && !user) {
-      navigate({ to: "/login" });
-    }
-  }, [hasHydrated, user, navigate]);
-
-  if (!hasHydrated) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          minHeight: "100vh",
-          color: "var(--color-text-muted)",
-          fontSize: 14,
-        }}
-      >
-        Загрузка...
-      </div>
-    );
-  }
-
-  if (!user) {
-    return null;
-  }
-
   return (
     <div className="app-layout">
       <SideBar />
       <main>
-        {sectionsForRole(user.role).some((section) => section.to === pathname)
-          ? <Outlet />
-          : <p role="alert">Этот раздел недоступен</p>}
+        <Outlet />
       </main>
     </div>
   );

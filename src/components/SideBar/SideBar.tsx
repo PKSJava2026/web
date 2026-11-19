@@ -71,12 +71,13 @@ export function sectionsForRole(role: Role) {
 
 export const SideBar = () => {
   const { user, logout } = useAuthStore();
+  const userId = user?.id;
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const [unread, setUnread] = useState(0);
 
   useEffect(() => {
-    if (!user) return;
+    if (userId === undefined) return;
     let active = true;
     let request = 0;
     async function refreshUnread() {
@@ -91,11 +92,11 @@ export const SideBar = () => {
       active = false;
       window.removeEventListener(notificationsReadEvent, refreshUnread);
     };
-  }, [user, pathname]);
+  }, [userId, pathname]);
 
   const handleLogout = () => {
     logout();
-    navigate({ to: "/login" });
+    navigate({ to: "/login", replace: true });
   };
 
   const allowedItems = user ? sectionsForRole(user.role) : [];
@@ -104,7 +105,7 @@ export const SideBar = () => {
     <div className="sidebar">
       <nav>
         {allowedItems.map((it) => (
-          <Link to={it.to} key={it.to}>
+          <Link to={it.to} key={it.to} preload={false}>
             {it.title}
             {it.to === "/notifications" && unread > 0 && (
               <span aria-label={unread + " непрочитанных"}> ({unread})</span>
