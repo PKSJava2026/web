@@ -1,0 +1,122 @@
+.notifications-table-container {
+  width: 100%;
+  overflow-x: auto;
+  background-color: var(--color-bg);
+}
+
+.notifications-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: var(--font-size-base);
+  font-family: inherit;
+}
+
+.notifications-table thead tr {
+  background-color: var(--color-surface);
+  height: 40px;
+}
+
+.notifications-table th {
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 0 8px;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.notifications-table th:first-child {
+  border-top-left-radius: var(--radius-md);
+  border-bottom-left-radius: var(--radius-md);
+}
+
+.notifications-table th:last-child {
+  border-top-right-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
+}
+
+.notifications-table tbody tr {
+  height: 40px;
+  background-color: var(--color-bg);
+  cursor: pointer;
+  transition: background-color 0.12s ease;
+}
+
+.notifications-table tbody tr:nth-child(even) {
+  background-color: var(--color-surface-subtle);
+}
+
+.notifications-table tbody tr:hover {
+  background-color: var(--color-surface);
+}
+
+.notifications-table tbody tr.unread-row td {
+  font-weight: 600;
+}
+
+.notifications-table tbody tr.selected {
+  background-color: var(--color-accent-tint) !important;
+}
+
+.notifications-table tbody tr.selected td {
+  color: var(--color-accent-text);
+}
+
+.notifications-table td {
+  padding: 0 8px;
+  font-size: 13px;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.notifications-table td.cell-date {
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.notifications-table td.cell-message {
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notifications-table td.cell-status {
+  white-space: nowrap;
+}
+
+.notifications-table .text-truncate {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notifications-table-empty {
+  text-align: center;
+  padding: 48px 16px !important;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+/* Skeleton loader */
+.notifications-table .skeleton-row td {
+  padding: 0 8px;
+}
+
+.notifications-table .skeleton-cell {
+  height: 14px;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-sm);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}

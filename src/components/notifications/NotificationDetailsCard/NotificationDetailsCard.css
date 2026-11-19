@@ -1,0 +1,52 @@
+.notification-details-card {
+  width: 270px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: fit-content;
+}
+
+.notification-details-title {
+  margin: 0;
+  color: var(--color-accent-text);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.notification-details-hint {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.notification-details-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.notification-details-grid .detail-item {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.notification-details-grid .field-label {
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.notification-details-grid .value-label {
+  color: var(--color-text);
+  word-break: break-word;
+  font-size: 13px;
+}
+
+.notification-details-grid .wrap-text {
+  white-space: pre-wrap;
+  line-height: 1.4;
+}
