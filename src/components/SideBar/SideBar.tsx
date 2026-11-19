@@ -1,8 +1,10 @@
 import type { Role } from "#/lib/types";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import "./SideBar.css";
 import { useAuthStore } from "#/store/useAuthStore";
 import { Button } from "../ui/Button";
+import { api, notificationsReadEvent } from "#/lib/api";
 
 interface NavItem {
   title: string;
@@ -63,18 +65,40 @@ const ROLES = {
   ADMIN: "Администратор",
 };
 
+export function sectionsForRole(role: Role) {
+  return NAV_ITEMS.filter((item) => item.roles.includes(role));
+}
+
 export const SideBar = () => {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const [unread, setUnread] = useState(0);
+
+  useEffect(() => {
+    if (!user) return;
+    let active = true;
+    let request = 0;
+    async function refreshUnread() {
+      const id = ++request;
+      const result = await api.notifications.unreadCount().catch(() => null);
+      if (active && request === id && result) setUnread(result.count);
+    }
+
+    void refreshUnread();
+    window.addEventListener(notificationsReadEvent, refreshUnread);
+    return () => {
+      active = false;
+      window.removeEventListener(notificationsReadEvent, refreshUnread);
+    };
+  }, [user, pathname]);
 
   const handleLogout = () => {
     logout();
     navigate({ to: "/login" });
   };
 
-  const allowedItems = user
-    ? NAV_ITEMS.filter((it) => it.roles.includes(user.role))
-    : [];
+  const allowedItems = user ? sectionsForRole(user.role) : [];
 
   return (
     <div className="sidebar">
@@ -82,6 +106,9 @@ export const SideBar = () => {
         {allowedItems.map((it) => (
           <Link to={it.to} key={it.to}>
             {it.title}
+            {it.to === "/notifications" && unread > 0 && (
+              <span aria-label={unread + " непрочитанных"}> ({unread})</span>
+            )}
           </Link>
         ))}
       </nav>

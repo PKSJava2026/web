@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { SideBar } from "#/components/SideBar";
-import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
+import { sectionsForRole } from "#/components/SideBar/SideBar";
+import { createFileRoute, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useAuthStore } from "#/store/useAuthStore";
 
 export const Route = createFileRoute("/_app")({
@@ -12,6 +13,7 @@ function AppLayout() {
   const user = useAuthStore((s) => s.user);
   const hasHydrated = useAuthStore((s) => s.hasHydrated);
   const navigate = useNavigate();
+  const pathname = useRouterState({ select: (state) => state.location.pathname.replace(/\/$/, "") });
 
   useEffect(() => {
     if (hasHydrated && !user) {
@@ -44,7 +46,9 @@ function AppLayout() {
     <div className="app-layout">
       <SideBar />
       <main>
-        <Outlet />
+        {sectionsForRole(user.role).some((section) => section.to === pathname)
+          ? <Outlet />
+          : <p role="alert">Этот раздел недоступен</p>}
       </main>
     </div>
   );

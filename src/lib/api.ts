@@ -141,6 +141,15 @@ const createContractClient = (kind: "customer" | "carrier") => {
 const customerContracts = createContractClient("customer");
 const carrierContracts = createContractClient("carrier");
 
+export const notificationsReadEvent = "expedition:notifications-read";
+
+function notifyRead<T>(response: T): T {
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new Event(notificationsReadEvent));
+  }
+  return response;
+}
+
 export const api = {
   auth: {
     register: (data: RegisterRequest) =>
@@ -256,11 +265,11 @@ export const api = {
         method: "GET",
       }),
     markRead: (id: number) =>
-      request<void>(`/api/notifications/${id}/read`, { method: "POST" }),
+      request<void>(`/api/notifications/${id}/read`, { method: "POST" }).then(notifyRead),
     markAllRead: () =>
       request<MarkAllReadResponse>("/api/notifications/read-all", {
         method: "POST",
-      }),
+      }).then(notifyRead),
   },
 
   ratings: {
