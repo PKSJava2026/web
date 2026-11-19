@@ -66,7 +66,7 @@ function ForwardersPage() {
     <section className="report-page">
       <h1>Экспедиторы</h1>
       <div className="report-actions">
-        <Button onClick={() => open("create")}>Добавить</Button>
+        <Button onClick={() => open("create")}>Назначить экспедитора</Button>
         <Button variant="danger" disabled={!selected || loading} onClick={() => open("delete")}>
           Удалить
         </Button>
@@ -86,7 +86,7 @@ function ForwardersPage() {
       {data && (
         <ReportTable
           label="Экспедиторы"
-          columns={["Никнейм", "Электронная почта", "Создан"]}
+          columns={["Никнейм", "Email", "Дата назначения"]}
           rows={data.map((user) => [user.nickname, user.email, formatDateTime(user.createdAt)])}
           selected={data.findIndex((user) => user.id === selected?.id)}
           onSelect={(index) => setSelected(data[index])}
