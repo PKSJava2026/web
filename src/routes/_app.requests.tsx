@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useAuthStore } from "#/store/useAuthStore";
 import type {
@@ -41,6 +41,7 @@ function RequestsPage() {
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const requestId = useRef(0);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<OrderStatus | "">("");
@@ -62,6 +63,7 @@ function RequestsPage() {
   const fetchOrders = useCallback(async () => {
     if (!user || user.role === "CARRIER") return;
 
+    const id = ++requestId.current;
     setIsLoading(true);
     setError(null);
 
@@ -76,6 +78,7 @@ function RequestsPage() {
     };
 
     const [data, err] = await getOrders(user?.role, params);
+    if (id !== requestId.current) return;
     setIsLoading(false);
 
     if (err) {
@@ -102,6 +105,7 @@ function RequestsPage() {
 
   useEffect(() => {
     fetchOrders();
+    return () => { requestId.current++; };
   }, [fetchOrders]);
 
   const handleResetFilters = () => {
@@ -148,7 +152,7 @@ function RequestsPage() {
   };
 
   const handleExport = async (format: "csv" | "xlsx") => {
-    const [, err] = await downloadOrdersExport(format);
+    const [, err] = await downloadOrdersExport(format, orders, !isCustomer);
     if (err) {
       setError(err);
     }
@@ -245,10 +249,10 @@ function RequestsPage() {
           Обновить
         </Button>
 
-        <Button variant="secondary" onClick={() => handleExport("csv")}>
+        <Button variant="secondary" disabled={isLoading || !orders.length} onClick={() => handleExport("csv")}>
           Экспорт CSV
         </Button>
-        <Button variant="secondary" onClick={() => handleExport("xlsx")}>
+        <Button variant="secondary" disabled={isLoading || !orders.length} onClick={() => handleExport("xlsx")}>
           Экспорт Excel
         </Button>
       </div>

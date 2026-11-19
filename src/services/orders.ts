@@ -1,3 +1,5 @@
+import { formatDate, formatDateTime } from "#/lib/format";
+import { downloadTable, type ExportFormat } from "#/lib/tableExport";
 import { z } from "zod";
 import api from "#/lib/api";
 import { validate, type FieldErrors } from "#/lib/validation";
@@ -218,25 +220,24 @@ export const changeOrderStatus = async (
 };
 
 export const downloadOrdersExport = async (
-  format: "csv" | "xlsx",
+  format: ExportFormat,
+  orders: OrderResponse[],
+  withCustomer: boolean,
 ): Promise<[true, null] | [null, string]> => {
+  const columns = [
+    "№", ...(withCustomer ? ["Заказчик"] : []), "Груз", "Откуда", "Куда",
+    "Вес, кг", "Объём, м³", "Желаемая дата", "Статус", "Создана",
+  ];
+  const rows = orders.map((order) => [
+    order.id, ...(withCustomer ? [order.customerNickname] : []), order.cargoDescription,
+    order.origin, order.destination, order.weightKg, order.volumeM3,
+    formatDate(order.desiredDate), ORDER_STATUS_LABELS[order.status], formatDateTime(order.createdAt),
+  ]);
+
   try {
-    const blob =
-      format === "xlsx"
-        ? await api.export.xlsx()
-        : await api.export.csv();
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `orders_${new Date().toISOString().slice(0, 10)}.${format}`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    await downloadTable(format, "orders", columns, rows);
     return [true, null];
-  } catch (e: any) {
-    const message =
-      e?.data?.message || e?.message || "Не удалось экспортировать заявки";
-    return [null, message];
+  } catch {
+    return [null, "Не удалось экспортировать заявки"];
   }
 };
