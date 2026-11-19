@@ -1,5 +1,6 @@
 import { useCallback, useState, type FormEvent } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { Card } from "#/components/ui/Card";
 import { Button } from "#/components/ui/Button";
 import { Input } from "#/components/ui/Input";
 import { ReportTable } from "#/components/ui/ReportTable";
@@ -113,7 +114,7 @@ function StatisticsPage() {
           <label htmlFor="stats-to">По</label>
           <Input id="stats-to" name="to" type="date" />
         </div>
-        <Button type="submit">Применить</Button>
+        <Button type="submit">Показать</Button>
         <Button type="reset" variant="secondary">
           Сбросить
         </Button>
@@ -124,14 +125,14 @@ function StatisticsPage() {
           disabled={!data || exporting}
           onClick={() => exportReport("csv")}
         >
-          Экспорт CSV
+          Экспорт в CSV
         </Button>
         <Button
           variant="secondary"
           disabled={!data || exporting}
           onClick={() => exportReport("xlsx")}
         >
-          Экспорт Excel
+          Экспорт в Excel
         </Button>
       </div>
       {loading && <p role="status">Загрузка…</p>}
@@ -145,14 +146,18 @@ function StatisticsPage() {
       {data && (
         <>
           <p>Период: {periodLabel}</p>
-          <h2>Показатели по заявкам</h2>
-          <ReportTable label="Показатели по заявкам" columns={columns} rows={ordersRows} />
-          <h2>Показатели компании</h2>
-          <ReportTable
-            label="Показатели компании"
-            columns={columns}
-            rows={companyRows.map((row) => row.map(displayCell))}
-          />
+          <Card>
+            <h2>Заявки</h2>
+            <ReportTable label="Заявки" columns={columns} rows={ordersRows} />
+          </Card>
+          <Card>
+            <h2>Сводка по компании</h2>
+            <ReportTable
+              label="Сводка по компании"
+              columns={columns}
+              rows={companyRows.map((row) => row.map(displayCell))}
+            />
+          </Card>
         </>
       )}
     </section>
