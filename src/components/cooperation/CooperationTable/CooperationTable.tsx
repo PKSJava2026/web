@@ -1,8 +1,15 @@
-import { memo } from "react";
+import { memo, useState, type CSSProperties } from "react";
+import { SortHeader } from "#/components/ui/SortHeader";
+import { nextSort, sortRows, type SortState } from "#/lib/tableSort";
 import type { CooperationRequestResponse } from "#/lib/types";
 import { formatDateTime } from "#/lib/format";
+import { COOPERATION_STATUS_LABELS } from "#/services/cooperation";
 import { StatusBadge } from "#/components/ui/StatusBadge";
 import "./CooperationTable.css";
+
+type Column = "id" | "carrierNickname" | "vehicleInfo" | "description" | "status" | "createdAt";
+
+const STATUSES = Object.keys(COOPERATION_STATUS_LABELS);
 
 export interface CooperationTableProps {
   requests: CooperationRequestResponse[];
@@ -23,6 +30,16 @@ export const CooperationTable = memo(function CooperationTable({
   emptyMessage = "Заявок о сотрудничестве нет",
   className = "",
 }: CooperationTableProps) {
+  const [sort, setSort] = useState<SortState<Column>>({ key: "id", descending: true });
+  const sorted = sortRows(requests, (row) => {
+    if (sort.key === "createdAt") return Date.parse(row.createdAt);
+    if (sort.key === "status") return STATUSES.indexOf(row.status);
+    return row[sort.key];
+  }, sort.descending);
+  const header = (key: Column, label: string, style: CSSProperties) => (
+    <SortHeader label={label} style={style} descending={sort.key === key ? sort.descending : undefined}
+      onClick={() => setSort((current) => nextSort(current, key))} />
+  );
   const totalCols = showCarrier ? 6 : 5;
 
   return (
@@ -30,12 +47,12 @@ export const CooperationTable = memo(function CooperationTable({
       <table className="cooperation-table">
         <thead>
           <tr>
-            <th style={{ width: 48 }}>№</th>
-            {showCarrier && <th style={{ width: 140 }}>Перевозчик</th>}
-            <th style={{ minWidth: 160 }}>Транспорт</th>
-            <th style={{ minWidth: 180 }}>О себе</th>
-            <th style={{ width: 120 }}>Статус</th>
-            <th style={{ width: 130 }}>Создана</th>
+            {header("id", "№", { width: 48 })}
+            {showCarrier && header("carrierNickname", "Перевозчик", { width: 140 })}
+            {header("vehicleInfo", "Транспорт", { minWidth: 160 })}
+            {header("description", "О себе", { minWidth: 180 })}
+            {header("status", "Статус", { width: 120 })}
+            {header("createdAt", "Создана", { width: 130 })}
           </tr>
         </thead>
         <tbody>
@@ -74,7 +91,7 @@ export const CooperationTable = memo(function CooperationTable({
               </td>
             </tr>
           ) : (
-            requests.map((req) => {
+            sorted.map((req) => {
               const isSelected = req.id === selectedId;
               return (
                 <tr
