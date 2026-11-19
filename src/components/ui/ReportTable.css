@@ -39,7 +39,10 @@
 .report-table tr.selected {
   background: var(--color-accent-tint);
 }
-.report-table button {
+.report-table tr[tabindex] {
   cursor: pointer;
-  text-decoration: underline;
+}
+.report-table tr[tabindex]:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -2px;
 }

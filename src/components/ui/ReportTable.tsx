@@ -33,25 +33,20 @@ export function ReportTable({
             <tr
               key={index}
               className={selected === index ? "selected" : undefined}
+              tabIndex={onSelect ? 0 : undefined}
+              aria-current={selected === index || undefined}
               onClick={onSelect ? () => onSelect(index) : undefined}
+              onKeyDown={onSelect && ((event) => {
+                if (event.target !== event.currentTarget) return;
+                if (event.key === "Enter") onSelect(index);
+                if (event.key === " ") event.preventDefault();
+              })}
+              onKeyUp={onSelect && ((event) => {
+                if (event.target === event.currentTarget && event.key === " ") onSelect(index);
+              })}
             >
               {row.map((value, column) => (
-                <td key={column}>
-                  {column === 0 && onSelect ? (
-                    <button
-                      type="button"
-                      aria-pressed={selected === index}
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        onSelect(index);
-                      }}
-                    >
-                      {value}
-                    </button>
-                  ) : (
-                    value
-                  )}
-                </td>
+                <td key={column}>{value}</td>
               ))}
             </tr>
           ))}
