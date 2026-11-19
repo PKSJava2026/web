@@ -7,6 +7,25 @@
 .report-page :is(h1, h2, p) {
   margin: 0;
 }
+.report-rating-card,
+.report-rating-card dl {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 24px;
+}
+.report-rating-card dl {
+  flex: 1;
+  margin: 0;
+}
+.report-rating-card dt {
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+.report-rating-card dd {
+  margin: 6px 0 0;
+  font-weight: 700;
+}
 .report-actions {
   display: flex;
   flex-wrap: wrap;

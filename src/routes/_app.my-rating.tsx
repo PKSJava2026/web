@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Card } from "#/components/ui/Card";
 import { Button } from "#/components/ui/Button";
 import { ReportTable } from "#/components/ui/ReportTable";
 import { api } from "#/lib/api";
@@ -13,31 +14,46 @@ function MyRatingPage() {
   return (
     <section className="report-page">
       <h1>Мой рейтинг</h1>
-      <div>
+      <Card className="report-rating-card">
+        {data && (
+          <dl>
+            <div>
+              <dt>Средний балл</dt>
+              <dd>
+                {data.summary.count
+                  ? data.summary.average.toLocaleString("ru-RU", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    }) + " из 5"
+                  : "—"}
+              </dd>
+            </div>
+            <div>
+              <dt>Оценка</dt>
+              <dd>
+                <span aria-hidden="true">{"★".repeat(filled) + "☆".repeat(5 - filled)}</span>
+              </dd>
+            </div>
+            <div>
+              <dt>Количество</dt>
+              <dd>{data.summary.count ? "Оценок: " + data.summary.count : "Оценок пока нет"}</dd>
+            </div>
+          </dl>
+        )}
         <Button variant="secondary" disabled={loading} onClick={refresh}>
           Обновить
         </Button>
-      </div>
+      </Card>
       {loading && <p role="status">Загрузка…</p>}
       {error && <p role="alert">{error}</p>}
       {data && (
         <>
-          <p>
-            Средняя оценка:{" "}
-            {data.summary.count
-              ? data.summary.average.toLocaleString("ru-RU", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                }) + " из 5"
-              : "—"}{" "}
-            <span aria-hidden="true">{"★".repeat(filled) + "☆".repeat(5 - filled)}</span>
-            {" · "}{data.summary.count ? "Оценок: " + data.summary.count : "Оценок пока нет"}
-          </p>
           <ReportTable
             label="Полученные оценки"
+            emptyMessage="Вас пока никто не оценил"
             columns={["Заявка", "От кого", "Оценка", "Комментарий", "Дата"]}
             rows={data.ratings.map((rating) => [
-              rating.orderId,
+              "№" + rating.orderId,
               rating.fromNickname,
               rating.score,
               rating.comment || "—",
