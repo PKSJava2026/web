@@ -32,7 +32,7 @@ function DatabaseTablesPage() {
 
   return (
     <section className="report-page">
-      <h1>Таблицы БД</h1>
+      <h1>Таблицы базы данных</h1>
       <div className="report-actions">
         <div className="report-field">
           <label htmlFor="report-table-name">Таблица</label>
@@ -56,14 +56,14 @@ function DatabaseTablesPage() {
           disabled={!table.data || exporting}
           onClick={() => exportSelected("csv")}
         >
-          Экспорт CSV
+          Экспорт в CSV
         </Button>
         <Button
           variant="secondary"
           disabled={!table.data || exporting}
           onClick={() => exportSelected("xlsx")}
         >
-          Экспорт Excel
+          Экспорт в Excel
         </Button>
       </div>
       {(names.loading || (name && table.loading)) && <p role="status">Загрузка…</p>}
