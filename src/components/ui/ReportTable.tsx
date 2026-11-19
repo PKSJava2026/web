@@ -7,14 +7,18 @@ export function ReportTable({
   label,
   selected,
   onSelect,
+  onActivate,
+  emptyMessage = "Нет данных",
 }: {
   columns: string[];
   rows: ReactNode[][];
   label: string;
   selected?: number;
   onSelect?: (index: number) => void;
+  onActivate?: (index: number) => void;
+  emptyMessage?: string;
 }) {
-  if (!rows.length) return <p>Нет данных</p>;
+  if (!rows.length) return <p>{emptyMessage}</p>;
 
   return (
     <div className="report-scroll" tabIndex={0} role="region" aria-label={label}>
@@ -36,14 +40,21 @@ export function ReportTable({
               tabIndex={onSelect ? 0 : undefined}
               aria-current={selected === index || undefined}
               onClick={onSelect ? () => onSelect(index) : undefined}
-              onKeyDown={onSelect && ((event) => {
-                if (event.target !== event.currentTarget) return;
-                if (event.key === "Enter") onSelect(index);
-                if (event.key === " ") event.preventDefault();
-              })}
-              onKeyUp={onSelect && ((event) => {
-                if (event.target === event.currentTarget && event.key === " ") onSelect(index);
-              })}
+              onDoubleClick={onActivate ? () => onActivate(index) : undefined}
+              onKeyDown={
+                onSelect &&
+                ((event) => {
+                  if (event.target !== event.currentTarget) return;
+                  if (event.key === "Enter") onSelect(index);
+                  if (event.key === " ") event.preventDefault();
+                })
+              }
+              onKeyUp={
+                onSelect &&
+                ((event) => {
+                  if (event.target === event.currentTarget && event.key === " ") onSelect(index);
+                })
+              }
             >
               {row.map((value, column) => (
                 <td key={column}>{value}</td>

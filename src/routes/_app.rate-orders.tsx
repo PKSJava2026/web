@@ -21,6 +21,13 @@ function RateOrdersPage() {
   const [savedOrderId, setSavedOrderId] = useState<number>();
   const [formError, setFormError] = useState("");
 
+  function openRating(order: OrderResponse) {
+    setSelected(order);
+    setFormError("");
+    setSavedOrderId(undefined);
+    setOpen(true);
+  }
+
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!selected || saving) return;
@@ -45,15 +52,18 @@ function RateOrdersPage() {
 
   return (
     <section className="report-page">
-      <h1>Оценка услуг</h1>
-      {savedOrderId !== undefined && <p role="status">Оценка по заявке №{savedOrderId} сохранена</p>}
+      <h1>
+        {target === "экспедитора" ? "Оценка услуги экспедитора" : "Оценка работы перевозчика"}
+      </h1>
+      <p>Оценить можно только доставленную заявку, по одной оценке на заявку.</p>
+      {savedOrderId !== undefined && (
+        <p role="status">Оценка по заявке №{savedOrderId} сохранена</p>
+      )}
       <div className="report-actions">
         <Button
           disabled={!selected || loading}
           onClick={() => {
-            setFormError("");
-            setSavedOrderId(undefined);
-            setOpen(true);
+            if (selected) openRating(selected);
           }}
         >
           Оценить
@@ -74,9 +84,10 @@ function RateOrdersPage() {
       {data && (
         <ReportTable
           label="Заявки для оценки"
+          emptyMessage="Нет услуг, ожидающих оценки"
           columns={["Заявка", "Груз", "Откуда", "Куда", "Создана"]}
           rows={data.map((order) => [
-            order.id,
+            "№" + order.id,
             order.cargoDescription,
             order.origin,
             order.destination,
@@ -84,6 +95,7 @@ function RateOrdersPage() {
           ])}
           selected={data.findIndex((order) => order.id === selected?.id)}
           onSelect={(index) => setSelected(data[index])}
+          onActivate={(index) => openRating(data[index])}
         />
       )}
       <Modal
@@ -91,7 +103,7 @@ function RateOrdersPage() {
         onClose={() => {
           if (!saving) setOpen(false);
         }}
-        title="Оценить услугу"
+        title={selected ? "Оценка по заявке №" + selected.id : "Оценка услуги"}
       >
         <form className="report-form" onSubmit={submit}>
           <p>
