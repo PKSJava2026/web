@@ -1,0 +1,29 @@
+table th.sort-header {
+  padding: 0;
+}
+.sort-header button {
+  width: 100%;
+  min-height: 32px;
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.sort-header button:focus-visible {
+  outline-offset: -2px;
+}
+.sort-header:hover button {
+  background: var(--color-surface);
+}
+.sort-header[aria-sort="ascending"] span::before {
+  content: "↑";
+}
+.sort-header[aria-sort="descending"] span::before {
+  content: "↓";
+}

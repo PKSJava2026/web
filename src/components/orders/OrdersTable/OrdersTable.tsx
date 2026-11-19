@@ -1,15 +1,22 @@
-import { memo } from "react";
+import { memo, type CSSProperties } from "react";
+import { SortHeader } from "#/components/ui/SortHeader";
+import type { SortState } from "#/lib/tableSort";
 import type { OrderResponse } from "#/lib/types";
 import {
   formatDate,
   formatDateTime,
-  formatWeight,
-  formatVolume,
 } from "#/lib/format";
 import { StatusBadge } from "#/components/ui/StatusBadge";
 import "./OrdersTable.css";
 
+export type OrderColumn = keyof Pick<OrderResponse,
+  "id" | "customerNickname" | "cargoDescription" | "origin" | "destination" |
+  "weightKg" | "volumeM3" | "desiredDate" | "status" | "createdAt"
+>;
+
 export interface OrdersTableProps {
+  sort: SortState<OrderColumn>;
+  onSort: (key: OrderColumn) => void;
   orders: OrderResponse[];
   selectedId?: number | null;
   onSelect?: (order: OrderResponse) => void;
@@ -25,26 +32,32 @@ export const OrdersTable = memo(function OrdersTable({
   onSelect,
   isLoading = false,
   showCustomer = false,
-  emptyMessage = "Заявок не найдено",
+  sort,
+  onSort,
+  emptyMessage = "Заявок пока нет",
   className = "",
 }: OrdersTableProps) {
   const totalCols = showCustomer ? 10 : 9;
+  const header = (key: OrderColumn, label: string, style: CSSProperties) => (
+    <SortHeader label={label} style={style} descending={sort.key === key ? sort.descending : undefined}
+      onClick={() => onSort(key)} />
+  );
 
   return (
     <div className={`orders-table-container ${className}`}>
       <table className="orders-table">
         <thead>
           <tr>
-            <th style={{ width: 44 }}>№</th>
-            {showCustomer && <th style={{ width: 100 }}>Клиент</th>}
-            <th style={{ minWidth: 140 }}>Груз</th>
-            <th style={{ width: 100 }}>Откуда</th>
-            <th style={{ width: 100 }}>Куда</th>
-            <th style={{ width: 75 }}>Вес</th>
-            <th style={{ width: 65 }}>Объем</th>
-            <th style={{ width: 95 }}>Желаемая дата</th>
-            <th style={{ width: 110 }}>Статус</th>
-            <th style={{ width: 105 }}>Создана</th>
+            {header("id", "№", { width: 44 })}
+            {showCustomer && header("customerNickname", "Заказчик", { width: 100 })}
+            {header("cargoDescription", "Груз", { minWidth: 140 })}
+            {header("origin", "Откуда", { width: 100 })}
+            {header("destination", "Куда", { width: 100 })}
+            {header("weightKg", "Вес, кг", { width: 75 })}
+            {header("volumeM3", "Объём, м³", { width: 65 })}
+            {header("desiredDate", "Желаемая дата", { width: 95 })}
+            {header("status", "Статус", { width: 110 })}
+            {header("createdAt", "Создана", { width: 105 })}
           </tr>
         </thead>
         <tbody>
@@ -133,10 +146,10 @@ export const OrdersTable = memo(function OrdersTable({
                     </span>
                   </td>
                   <td className="cell-weight">
-                    {formatWeight(order.weightKg)}
+                    {order.weightKg?.toLocaleString("ru-RU", { maximumFractionDigits: 3 }) ?? "—"}
                   </td>
                   <td className="cell-volume">
-                    {formatVolume(order.volumeM3)}
+                    {order.volumeM3?.toLocaleString("ru-RU", { maximumFractionDigits: 3 }) ?? "—"}
                   </td>
                   <td className="cell-date">{formatDate(order.desiredDate)}</td>
                   <td className="cell-status">

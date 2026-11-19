@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import { nextSort, sortRows, type SortState } from "#/lib/tableSort";
 import { createFileRoute } from "@tanstack/react-router";
 import { useAuthStore } from "#/store/useAuthStore";
 import type {
@@ -17,6 +18,7 @@ import {
 } from "#/services/orders";
 import {
   OrdersTable,
+  type OrderColumn,
   OrderDetailsCard,
   OrderFormModal,
   OrderStatusModal,
@@ -31,6 +33,12 @@ import "./requests.css";
 export const Route = createFileRoute("/_app/requests")({
   component: RequestsPage,
 });
+
+const DEFAULT_SORT: SortState<OrderColumn> = { key: "id", descending: true };
+const SORT_COLUMNS: Record<OrderSort, OrderColumn> = {
+  DATE: "createdAt", STATUS: "status", WEIGHT: "weightKg",
+};
+const ORDER_STATUSES = Object.keys(ORDER_STATUS_LABELS);
 
 function RequestsPage() {
   const user = useAuthStore((state) => state.user);
@@ -48,8 +56,13 @@ function RequestsPage() {
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
   const [activeOnly, setActiveOnly] = useState(false);
-  const [sortBy, setSortBy] = useState<OrderSort | "">("");
-  const [isDesc, setIsDesc] = useState(false);
+  const [sort, setSort] = useState(DEFAULT_SORT);
+  const sortBy = (Object.keys(SORT_COLUMNS) as OrderSort[]).find((key) => SORT_COLUMNS[key] === sort.key) ?? "";
+  const sortedOrders = sortRows(orders, (order) => {
+    if (sort.key === "status") return ORDER_STATUSES.indexOf(order.status);
+    if (sort.key === "createdAt") return Date.parse(order.createdAt);
+    return order[sort.key];
+  }, sort.descending);
 
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -73,8 +86,6 @@ function RequestsPage() {
       ...(dateFrom ? { from: dateFrom } : {}),
       ...(dateTo ? { to: dateTo } : {}),
       ...(activeOnly ? { active: true } : {}),
-      ...(sortBy ? { sort: sortBy } : {}),
-      desc: isDesc,
     };
 
     const [data, err] = await getOrders(user?.role, params);
@@ -99,8 +110,6 @@ function RequestsPage() {
     dateFrom,
     dateTo,
     activeOnly,
-    sortBy,
-    isDesc,
   ]);
 
   useEffect(() => {
@@ -114,8 +123,7 @@ function RequestsPage() {
     setDateFrom("");
     setDateTo("");
     setActiveOnly(false);
-    setSortBy("");
-    setIsDesc(false);
+    setSort(DEFAULT_SORT);
   };
 
   const handleRowSelect = useCallback((order: OrderResponse) => {
@@ -152,7 +160,7 @@ function RequestsPage() {
   };
 
   const handleExport = async (format: "csv" | "xlsx") => {
-    const [, err] = await downloadOrdersExport(format, orders, !isCustomer);
+    const [, err] = await downloadOrdersExport(format, sortedOrders, !isCustomer);
     if (err) {
       setError(err);
     }
@@ -184,7 +192,7 @@ function RequestsPage() {
   if (user?.role === "CARRIER") {
     return (
       <div className="requests-page">
-        <h1 className="page-title">Заявки на перевозку</h1>
+        <h1 className="page-title">{isCustomer ? "Мои заявки" : "Заявки на перевозку"}</h1>
         <div style={{ color: "var(--color-text-muted)", marginTop: 16 }}>
           Раздел заявок доступен только заказчикам и экспедиторам. Для работы с
           перевозками перейдите в раздел «Договоры».
@@ -195,7 +203,7 @@ function RequestsPage() {
 
   return (
     <div className="requests-page">
-      <h1 className="page-title">Заявки на перевозку</h1>
+      <h1 className="page-title">{isCustomer ? "Мои заявки" : "Заявки на перевозку"}</h1>
 
       {error && <div className="requests-error-alert">{error}</div>}
 
@@ -314,17 +322,17 @@ function RequestsPage() {
 
         <Select
           value={sortBy}
-          onChange={(e) => setSortBy((e.target.value as OrderSort) || "")}
+          onChange={(e) => setSort(e.target.value ? { key: SORT_COLUMNS[e.target.value as OrderSort], descending: sort.descending } : DEFAULT_SORT)}
           options={sortOptions}
           style={{ width: 150 }}
         />
 
         <Button
           variant="secondary"
-          onClick={() => setIsDesc(!isDesc)}
+          onClick={() => setSort((current) => nextSort(current, current.key))}
           title="Направление сортировки"
         >
-          {isDesc ? "По убыванию" : "По возрастанию"}
+          {sort.descending ? "По убыванию" : "По возрастанию"}
         </Button>
 
         <Button variant="secondary" onClick={handleResetFilters}>
@@ -335,7 +343,9 @@ function RequestsPage() {
       <div className="requests-main-content">
         <div className="requests-table-section">
           <OrdersTable
-            orders={orders}
+            orders={sortedOrders}
+            sort={sort}
+            onSort={(key) => setSort((current) => nextSort(current, key))}
             selectedId={selectedId}
             onSelect={handleRowSelect}
             isLoading={isLoading}
