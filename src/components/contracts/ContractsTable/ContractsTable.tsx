@@ -1,6 +1,8 @@
-import { memo } from "react";
+import { memo, useState } from "react";
+import { SortHeader } from "#/components/ui/SortHeader";
+import { sortRows } from "#/lib/tableSort";
 import type { ContractResponse } from "#/lib/types";
-import { formatMoney, formatDate } from "#/lib/format";
+import { formatMoney } from "#/lib/format";
 import { StatusBadge } from "#/components/ui/StatusBadge";
 import "./ContractsTable.css";
 
@@ -25,6 +27,8 @@ export const ContractsTable = memo(function ContractsTable({
   emptyMessage = "Договоров пока нет",
   className = "",
 }: ContractsTableProps) {
+  const [descending, setDescending] = useState(true);
+  const sorted = sortRows(contracts, (row) => row.id, descending);
   const isDimmed = (contract: ContractResponse) =>
     contract.status === "TERMINATED" ||
     contract.status === "COMPLETED" ||
@@ -36,16 +40,12 @@ export const ContractsTable = memo(function ContractsTable({
       <table className="contracts-table">
         <thead>
           <tr>
-            <th style={{ width: 50 }}>№</th>
-            <th style={{ width: 75 }}>Заявка</th>
-            {isStaff ? (
-              <th style={{ minWidth: 120 }}>{counterpartyTitle}</th>
-            ) : (
-              <th style={{ minWidth: 120 }}>Экспедитор</th>
-            )}
-            <th style={{ width: 130 }}>Цена</th>
-            <th style={{ width: 140 }}>Срок</th>
-            <th style={{ width: 160 }}>Статус</th>
+            <SortHeader label="№" style={{ width: 50 }} descending={descending}
+              onClick={() => setDescending((current) => !current)} />
+            <th scope="col" style={{ width: 75 }}>Заявка</th>
+            <th scope="col" style={{ minWidth: 120 }}>{isStaff ? counterpartyTitle : "Экспедитор"}</th>
+            <th scope="col" style={{ width: 130 }}>Цена, руб.</th>
+            <th scope="col" style={{ width: 160 }}>Статус</th>
           </tr>
         </thead>
         <tbody>
@@ -65,9 +65,6 @@ export const ContractsTable = memo(function ContractsTable({
                   <div className="skeleton-cell" style={{ width: 80 }} />
                 </td>
                 <td>
-                  <div className="skeleton-cell" style={{ width: 90 }} />
-                </td>
-                <td>
                   <div
                     className="skeleton-cell"
                     style={{ width: 100, borderRadius: 12 }}
@@ -77,12 +74,12 @@ export const ContractsTable = memo(function ContractsTable({
             ))
           ) : contracts.length === 0 ? (
             <tr>
-              <td colSpan={6} className="contracts-table-empty">
+              <td colSpan={5} className="contracts-table-empty">
                 {emptyMessage}
               </td>
             </tr>
           ) : (
-            contracts.map((contract) => {
+            sorted.map((contract) => {
               const isSelected = contract.id === selectedId;
               const dimmed = isDimmed(contract) && !isSelected;
               return (
@@ -109,11 +106,6 @@ export const ContractsTable = memo(function ContractsTable({
                   </td>
                   <td className="cell-price font-medium">
                     {formatMoney(contract.price)}
-                  </td>
-                  <td className="cell-period">
-                    {contract.startDate || contract.endDate
-                      ? `${formatDate(contract.startDate)} - ${formatDate(contract.endDate)}`
-                      : "-"}
                   </td>
                   <td className="cell-status">
                     <StatusBadge status={contract.status} />

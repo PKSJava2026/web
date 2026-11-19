@@ -92,12 +92,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-.contracts-table .cell-period {
-  white-space: nowrap;
-  font-size: 12px;
-  color: var(--color-text-muted);
-}
-
 .contracts-table .cell-status {
   white-space: nowrap;
 }
